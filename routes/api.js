@@ -20,11 +20,11 @@ router.get('/episodes', function (req, res, next) {
 
     phimmoi.search().then(function (episodes) {
         if (begin && end) {
-            var tmp = episodes.slice(begin, end);
-            res.json(tmp);
+            var tmp = episodes.slice(begin-1, end);
+            res.json({'data': tmp});
         }
         else {
-            res.json(episodes);
+            res.json({'data': episodes});
         }
     });
 });
@@ -34,12 +34,36 @@ router.get('/episode', function (req, res, next) {
 
     if (url) {
         phimmoi.findMedias(url).then(function (episode) {
-            res.json(episode);
+            res.json({'data': episode});
         });
     }
     else {
-        res.json({});
+        res.json({'data': []});
     }
+});
+
+router.get('/player', function(req, res, next) {
+   var id = req.query.id;
+
+   if (id) {
+       phimmoi.search().then(function (episodes) {
+           var item = episodes.slice(id-1, id)[0];
+           console.log(item);
+
+           if (item.url) {
+               phimmoi.findMedias(item.url).then(function (episode) {
+                   res.json({'data': episode});
+               });
+           }
+           else {
+               res.json({'data': []});
+           }
+
+       });
+   }
+   else {
+       res.json({'data': []});
+   }
 });
 
 module.exports = router;

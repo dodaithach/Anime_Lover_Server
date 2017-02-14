@@ -15,9 +15,17 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/episodes', function(req, res, next) {
+    var begin = req.query.begin;
+    var end = req.query.end;
+
     phimmoi.search().then(function(episodes) {
-       console.log(episodes);
-       res.json(episodes);
+       if (begin && end) {
+           var tmp = episodes.slice(begin,end);
+           res.json(tmp);
+       }
+       else {
+            res.json(episodes);
+       }
     });
 });
 

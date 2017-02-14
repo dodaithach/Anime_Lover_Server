@@ -62,8 +62,6 @@ exports.findMedias = (url) => {
                       resolution: parseFloat(video.resolution),
                       label: video.resolution};
 
-        console.log(item);
-
         return item;
     })
   })
@@ -74,8 +72,6 @@ const findEpisodeUrl = (id) => {
   .then(response => cheerio.load(response.body))
   .then($ => {
                 var test = $('script[onload="checkEpisodeInfoLoaded(this)"]').attr('src');
-                console.log("findEpisodeUrl");
-                console.log(test);
                 return test;
               })
 }

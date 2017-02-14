@@ -30,10 +30,17 @@ router.get('/episodes', function(req, res, next) {
 });
 
 router.get('/episode', function(req, res, next) {
-    phimmoi.findMedias('phim/dao-hai-tac-i2-665/tap-7-84786.html').then(function(episode) {
-        console.log(episode);
-        res.json(episode);
-    });
+    var url = req.query.url;
+
+    if (url) {
+        phimmoi.findMedias(url).then(function (episode) {
+            console.log(episode);
+            res.json(episode);
+        });
+    }
+    else {
+        res.json({});
+    }
 });
 
 module.exports = router;
